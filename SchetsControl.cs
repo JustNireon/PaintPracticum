@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -7,6 +8,7 @@ namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
+        public List<GraphicalObject> grlist;
 
         public Color PenKleur
         { get { return penkleur; }
@@ -15,7 +17,9 @@ namespace SchetsEditor
         { get { return schets;   }
         }
         public SchetsControl()
-        {   this.BorderStyle = BorderStyle.Fixed3D;
+        {
+            grlist = new List<GraphicalObject>();
+            this.BorderStyle = BorderStyle.Fixed3D;
             this.schets = new Schets();
             this.Paint += this.teken;
             this.Resize += this.veranderAfmeting;
@@ -25,7 +29,12 @@ namespace SchetsEditor
         {
         }
         private void teken(object o, PaintEventArgs pea)
-        {   schets.Teken(pea.Graphics);
+        {
+            pea.Graphics.Clear(Color.White);
+            for (int i = 0; i < grlist.Count; i++)
+            {
+                grlist[i].draw(pea.Graphics);
+            }
         }
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace SchetsEditor
 {
     public class Schets
     {
         private Bitmap bitmap;
-        protected List<StartpuntTool> elelist = new List<StartpuntTool>();
+
         public Schets()
         {
             bitmap = new Bitmap(1, 1);
@@ -29,9 +30,13 @@ namespace SchetsEditor
                 bitmap = nieuw;
             }
         }
-        public void Teken(Graphics gr)
+        public void Teken(Graphics gr, SchetsControl s)
         {
-            gr.DrawImage(bitmap, 0, 0);
+            for (int i = 0; i < s.grlist.Count; i++)
+            {
+                s.grlist[i].draw(gr);
+            }
+               
         }
         public void Schoon()
         {
