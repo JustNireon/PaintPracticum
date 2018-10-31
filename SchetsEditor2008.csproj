@@ -132,4 +132,10 @@
   <ItemGroup>
     <None Include="Resources\text.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lijn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cirkel.png" />
+  </ItemGroup>
 </Project>

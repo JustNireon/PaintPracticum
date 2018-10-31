@@ -58,6 +58,7 @@ namespace SchetsEditor
 
             this.ClientSize = new Size(700, 500);
             this.BackColor = Color.FromArgb(40,40,40);
+            this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             huidigeTool = deTools[0];
 
             schetscontrol = new SchetsControl();

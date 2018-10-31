@@ -37,11 +37,11 @@ namespace SchetsEditor
             }
         }
 
-        public void removeObject(Point p1)
+        public void RemoveObject(Point p1)
         {
             for (int i = grlist.Count; i > -1; i--)
             {
-                if (grlist[i].isWithin(Point p1))
+                if (grlist[i].isWithin(p1))
                 {
                     grlist.RemoveAt(i);
                 }
