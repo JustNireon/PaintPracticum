@@ -35,19 +35,22 @@ namespace SchetsEditor
 
         public override void Letter(SchetsControl s, char c)
         {
-            if (c >= 32)
+            if (c == ' ')
             {
-                Graphics gr = s.MaakBitmapGraphics();
-                Font font = new Font("Tahoma", 40);
-                string tekst = c.ToString();
-                SizeF sz = 
-                gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-                gr.DrawString   (tekst, font, kwast, 
-                                              this.startpunt, StringFormat.GenericTypographic);
-                // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
-                startpunt.X += (int)sz.Width;
-                s.Invalidate();
+                startpunt.X += 20;
             }
+            else if (c >= 32)
+            {
+                Font font = new Font("Segoe UI", 40);
+                string tekst = c.ToString();
+                SizeF sz =
+                    s.MaakBitmapGraphics().MeasureString(tekst, font, startpunt, StringFormat.GenericTypographic);
+                s.getSchets().AddGraphics(new Tekst(kwast, startpunt, c,font));
+                startpunt.X += (int)sz.Width;
+                
+                
+            }
+            s.Invalidate();
         }
     }
 
@@ -96,7 +99,7 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.AddGraphicalObject(new Rechthoek(kwast, p1, p2));
+            s.getSchets().AddGraphics(new Rechthoek(kwast, p1, p2));
         }
 
     }
@@ -107,7 +110,7 @@ namespace SchetsEditor
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.AddGraphicalObject(new GevuldeRechthoek(kwast, p1, p2));
+            s.getSchets().AddGraphics(new GevuldeRechthoek(kwast, p1, p2));
         }
     }
 
@@ -120,7 +123,7 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.AddGraphicalObject(new lijn(kwast, p1, p2));
+            s.getSchets().AddGraphics(new lijn(kwast, p1, p2));
         }
 
     }
@@ -143,6 +146,10 @@ namespace SchetsEditor
         {   s.CreateGraphics().DrawLine(MaakPen(Brushes.White, 7), p1, p2);
         }
 
+        public override void Compleet(SchetsControl s, Point p1, Point p2)
+        {
+            s.getSchets().RemoveObject(p1);
+        }
     }
     public class CirkelTool : TweepuntTool
     {
@@ -154,7 +161,7 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.AddGraphicalObject(new Cirkel(kwast,p1,p2));
+            s.getSchets().AddGraphics(new Cirkel(kwast,p1,p2));
         }
     }
 }

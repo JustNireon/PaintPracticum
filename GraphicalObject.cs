@@ -84,9 +84,10 @@ namespace SchetsEditor
     {
 
         protected char letter;
-
-        public Tekst(Brush kleur, Point p1, char c)
+        protected Font font;
+        public Tekst(Brush kleur, Point p1, char c,Font f)
         {
+            font = f;
             kwast = kleur;
             startpoint = p1;
             letter = c;
@@ -95,13 +96,10 @@ namespace SchetsEditor
         {
             if (letter >= 32)
             {
-                Font font = new Font("Segoe UI", 40);
-                string tekst = letter.ToString();
-                SizeF sz =
-                g.MeasureString(tekst, font, startpoint, StringFormat.GenericTypographic);
-                g.DrawString(tekst, font, kwast,startpoint, StringFormat.GenericTypographic);
+             
+                g.DrawString(letter.ToString(), font, kwast,startpoint, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
-                startpoint.X += (int)sz.Width;
+                
             }
         }
     }

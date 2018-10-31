@@ -36,6 +36,18 @@ namespace SchetsEditor
                 bitmap = nieuw;
             }
         }
+
+        public void removeObject(Point p1)
+        {
+            for (int i = grlist.Count; i > -1; i--)
+            {
+                if (grlist[i].isWithin(Point p1))
+                {
+                    grlist.RemoveAt(i);
+                }
+            }
+
+        }
         public void Teken(Graphics gr, SchetsControl s)
         {
             for (int i = 0; i < grlist.Count; i++)
