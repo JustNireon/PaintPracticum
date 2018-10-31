@@ -141,7 +141,7 @@ namespace SchetsEditor
                 b.FlatStyle = FlatStyle.Flat;
                 b.FlatAppearance.BorderSize = 0;
                 b.FlatAppearance.CheckedBackColor = Color.FromArgb(70, 70, 70);
-                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
+                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(80, 80, 80);
                 b.FlatAppearance.MouseDownBackColor = Color.FromArgb(70, 70, 70);
                 b.Font = new Font("Segoe UI Light", 8.15f);
                 b.ForeColor = Color.White;
@@ -160,29 +160,41 @@ namespace SchetsEditor
         {   
             paneel = new Panel();
             paneel.Size = new Size(600, 24);
+            paneel.BorderStyle = BorderStyle.None;
             this.Controls.Add(paneel);
             
             Button b; Label l; ComboBox cbb;
             b = new Button(); 
-            b.Text = "Clear";  
-            b.Location = new Point(  0, 0); 
+            b.Text = "Clear";
+            b.ForeColor = Color.White;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Location = new Point(0, 0);
+            b.Font = new Font("Segoe UI", 8.15f);
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
             
             b = new Button(); 
-            b.Text = "Rotate"; 
-            b.Location = new Point( 80, 0); 
+            b.Text = "Rotate";
+            b.ForeColor = Color.White;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Location = new Point( 80, 0);
+            b.Font = new Font("Segoe UI", 8.15f);
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
             
             l = new Label();  
-            l.Text = "Penkleur:"; 
+            l.Text = "Penkleur:";
+            l.ForeColor = Color.White;
             l.Location = new Point(180, 3); 
-            l.AutoSize = true;               
+            l.AutoSize = true;
+            l.Font = new Font("Segoe UI Light", 8.15f);
             paneel.Controls.Add(l);
             
             cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
-            cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
+            cbb.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbb.Font = new Font("Segoe UI", 8.15f);
+            cbb.BackColor = Color.FromArgb(40, 40, 40);
+            cbb.ForeColor = Color.White;
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)
                 cbb.Items.Add(k);
