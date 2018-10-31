@@ -57,6 +57,7 @@ namespace SchetsEditor
                                  };
 
             this.ClientSize = new Size(700, 500);
+            this.BackColor = Color.FromArgb(40,40,40);
             huidigeTool = deTools[0];
 
             schetscontrol = new SchetsControl();
@@ -136,6 +137,14 @@ namespace SchetsEditor
                 b.Location = new Point(10, 10 + t * 62);
                 b.Tag = tool;
                 b.Text = tool.ToString();
+                b.FlatStyle = FlatStyle.Flat;
+                b.FlatAppearance.BorderSize = 0;
+                b.FlatAppearance.CheckedBackColor = Color.FromArgb(70, 70, 70);
+                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
+                b.FlatAppearance.MouseDownBackColor = Color.FromArgb(70, 70, 70);
+                b.Font = new Font("Segoe UI Light", 8.15f);
+                b.ForeColor = Color.White;
+                b.Margin = new Padding(4);
                 b.Image = (Image)resourcemanager.GetObject(tool.ToString());
                 b.TextAlign = ContentAlignment.TopCenter;
                 b.ImageAlign = ContentAlignment.BottomCenter;
@@ -178,6 +187,18 @@ namespace SchetsEditor
                 cbb.Items.Add(k);
             cbb.SelectedIndex = 0;
             paneel.Controls.Add(cbb);
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // SchetsWin
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Name = "SchetsWin";
+            this.ResumeLayout(false);
+
         }
     }
 }

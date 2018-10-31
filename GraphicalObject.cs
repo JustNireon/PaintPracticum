@@ -14,10 +14,8 @@ namespace SchetsEditor
         protected Color kwast;
         protected Point startpoint;
 
-        public virtual void draw(Graphics g)
-        {
-
-        }
+        public abstract void draw(Graphics g);
+        public abstract bool isWithin(Point p);
     }
 
     public abstract class TwoPoint : GraphicalObject
