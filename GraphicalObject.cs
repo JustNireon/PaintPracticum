@@ -8,10 +8,9 @@ using System.Windows.Forms;
 
 namespace SchetsEditor
 {
-    //hi
     public abstract class GraphicalObject
     {
-        protected Color kwast;
+        protected Brush kwast;
         protected Point startpoint;
 
         public abstract void draw(Graphics g);
@@ -26,7 +25,7 @@ namespace SchetsEditor
 
     public class lijn : TwoPoint
     {
-        public lijn(Color kleur, Point p1, Point p2)
+        public lijn(Brush kleur, Point p1, Point p2)
         {
             kwast = kleur;
             startpoint = p1;
@@ -41,7 +40,7 @@ namespace SchetsEditor
 
     public class GevuldeRechthoek : TwoPoint
     {
-        public GevuldeRechthoek(Color kleur, Point p1, Point p2)
+        public GevuldeRechthoek(Brush kleur, Point p1, Point p2)
         {
             kwast = kleur;
             startpoint = p1;
@@ -49,12 +48,12 @@ namespace SchetsEditor
         }
         public override void draw(Graphics g)
         {
-            g.FillRectangle(new SolidBrush(kwast), startpoint.X,startpoint.Y,eindPoint.X-startpoint.X,eindPoint.Y-startpoint.Y);
+            g.FillRectangle(kwast, startpoint.X,startpoint.Y,eindPoint.X-startpoint.X,eindPoint.Y-startpoint.Y);
         }
     }
     public class Rechthoek : TwoPoint
     {
-        public Rechthoek(Color kleur, Point p1, Point p2)
+        public Rechthoek(Brush kleur, Point p1, Point p2)
         {
             kwast = kleur;
             startpoint = p1;
@@ -67,7 +66,7 @@ namespace SchetsEditor
     }
     public class Cirkel : TwoPoint
     {
-        public Cirkel(Color kleur, Point p1, Point p2)
+        public Cirkel(Brush kleur, Point p1, Point p2)
         {
             kwast = kleur;
             startpoint = p1;
@@ -83,9 +82,10 @@ namespace SchetsEditor
     {
 
         protected char letter;
-
-        public Tekst(Color kleur, Point p1, char c)
+        protected Font font;
+        public Tekst(Brush kleur, Point p1, char c,Font f)
         {
+            font = f;
             kwast = kleur;
             startpoint = p1;
             letter = c;
@@ -94,13 +94,10 @@ namespace SchetsEditor
         {
             if (letter >= 32)
             {
-                Font font = new Font("Segoe UI", 40);
-                string tekst = letter.ToString();
-                SizeF sz =
-                g.MeasureString(tekst, font, startpoint, StringFormat.GenericTypographic);
-                g.DrawString(tekst, font, new SolidBrush(kwast),startpoint, StringFormat.GenericTypographic);
+             
+                g.DrawString(letter.ToString(), font, kwast,startpoint, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
-                startpoint.X += (int)sz.Width;
+                
             }
         }
     }

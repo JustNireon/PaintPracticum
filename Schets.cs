@@ -7,15 +7,21 @@ namespace SchetsEditor
 {
     public class Schets
     {
+        public List<GraphicalObject> grlist;
         private Bitmap bitmap;
-
         public Schets()
         {
-            bitmap = new Bitmap(1, 1);
+            grlist = new List<GraphicalObject>();
+            bitmap = new Bitmap(1,1);
         }
         public Graphics BitmapGraphics
         {
             get { return Graphics.FromImage(bitmap); }
+        }
+
+        public void AddGraphics(GraphicalObject t)
+        {
+            grlist.Add(t);
         }
         public void VeranderAfmeting(Size sz)
         {
@@ -30,13 +36,25 @@ namespace SchetsEditor
                 bitmap = nieuw;
             }
         }
+
+        public void removeObject(Point p1)
+        {
+            for (int i = grlist.Count; i > -1; i--)
+            {
+                if (grlist[i].isWithin(Point p1))
+                {
+                    grlist.RemoveAt(i);
+                }
+            }
+
+        }
         public void Teken(Graphics gr, SchetsControl s)
         {
-            for (int i = 0; i < s.grlist.Count; i++)
+            for (int i = 0; i < grlist.Count; i++)
             {
-                s.grlist[i].draw(gr);
+                grlist[i].draw(BitmapGraphics);
             }
-               
+            gr.DrawImage(bitmap, 0, 0);
         }
         public void Schoon()
         {
