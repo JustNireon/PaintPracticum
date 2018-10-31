@@ -8,7 +8,6 @@ namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
-        public List<GraphicalObject> grlist;
 
         public Color PenKleur
         { get { return penkleur; }
@@ -18,7 +17,6 @@ namespace SchetsEditor
         }
         public SchetsControl()
         {
-            grlist = new List<GraphicalObject>();
             this.BorderStyle = BorderStyle.Fixed3D;
             this.schets = new Schets();
             this.Paint += this.teken;
@@ -30,11 +28,7 @@ namespace SchetsEditor
         }
         private void teken(object o, PaintEventArgs pea)
         {
-            pea.Graphics.Clear(Color.White);
-            for (int i = 0; i < grlist.Count; i++)
-            {
-                grlist[i].draw(pea.Graphics);
-            }
+            schets.Teken(pea.Graphics,this);
         }
         private void veranderAfmeting(object o, EventArgs ea)
         {   schets.VeranderAfmeting(this.ClientSize);
@@ -44,6 +38,10 @@ namespace SchetsEditor
         {   Graphics g = schets.BitmapGraphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;
             return g;
+        }
+        public void AddGraphicalObject(GraphicalObject o)
+        {
+            schets.AddGraphics(o);
         }
         public void Schoon(object o, EventArgs ea)
         {   schets.Schoon();

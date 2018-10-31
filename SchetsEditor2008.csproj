@@ -66,6 +66,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Tools.cs" />
     <Compile Include="Schets.cs" />
     <Compile Include="SchetsControl.cs">
       <SubType>UserControl</SubType>
@@ -73,7 +74,6 @@
     <Compile Include="SchetsWin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
