@@ -85,7 +85,7 @@ namespace SchetsEditor
 
         protected char letter;
 
-        public Tekst(Color kleur, Point p1, char c)
+        public Tekst(Brush kleur, Point p1, char c)
         {
             kwast = kleur;
             startpoint = p1;
@@ -99,7 +99,7 @@ namespace SchetsEditor
                 string tekst = letter.ToString();
                 SizeF sz =
                 g.MeasureString(tekst, font, startpoint, StringFormat.GenericTypographic);
-                g.DrawString(tekst, font, new SolidBrush(kwast),startpoint, StringFormat.GenericTypographic);
+                g.DrawString(tekst, font, kwast,startpoint, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 startpoint.X += (int)sz.Width;
             }
