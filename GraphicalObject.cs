@@ -36,6 +36,18 @@ namespace SchetsEditor
         {
             g.DrawLine(new Pen(kwast,3), startpoint,eindPoint);
         }
+
+        public override bool isWithin(Point p1)
+        {
+            if ((Math.Abs((eindPoint.Y - startpoint.Y) * p1.X - (eindPoint.X - startpoint.X) * p1.Y +
+                          eindPoint.X * startpoint.Y - eindPoint.Y * startpoint.X)) /
+                Math.Sqrt(Math.Pow(eindPoint.Y - startpoint.Y, 2) + Math.Pow(eindPoint.X - startpoint.X, 2)) < 5)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 
     public class GevuldeRechthoek : TwoPoint
