@@ -1,47 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Windows.Forms;
 
 namespace SchetsEditor
 {
     public abstract class GraphicalObject
     {
-        protected Brush kwast;
-        protected Point startpoint;
+        protected Brush Kwast;
+        protected Point Startpoint;
 
-        public abstract void draw(Graphics g);
-        public abstract bool isWithin(Point p);
+        public abstract void Draw(Graphics g);
+        public abstract bool IsWithin(Point p);
     }
 
     public abstract class TwoPoint : GraphicalObject
     {
 
-        protected Point eindPoint;
+        protected Point EindPoint;
     }
 
-    public class lijn : TwoPoint
+    public class Lijn : TwoPoint
     {
-        public lijn(Brush kleur, Point p1, Point p2)
+        public Lijn(Brush kleur, Point p1, Point p2)
         {
-            kwast = kleur;
-            startpoint = p1;
-            eindPoint = p2;
+            Kwast = kleur;
+            Startpoint = p1;
+            EindPoint = p2;
         }
 
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(kwast,3), startpoint,eindPoint);
+            g.DrawLine(new Pen(Kwast,3), Startpoint,EindPoint);
         }
 
-        public override bool isWithin(Point p1)
+        public override bool IsWithin(Point p1)
         {
-            if ((Math.Abs((eindPoint.Y - startpoint.Y) * p1.X - (eindPoint.X - startpoint.X) * p1.Y +
-                          eindPoint.X * startpoint.Y - eindPoint.Y * startpoint.X)) /
-                Math.Sqrt(Math.Pow(eindPoint.Y - startpoint.Y, 2) + Math.Pow(eindPoint.X - startpoint.X, 2)) < 5)
+            if ((Math.Abs((EindPoint.Y - Startpoint.Y) * p1.X - (EindPoint.X - Startpoint.X) * p1.Y +
+                          EindPoint.X * Startpoint.Y - EindPoint.Y * Startpoint.X) /
+                Math.Sqrt(Math.Pow(EindPoint.Y - Startpoint.Y, 2) + Math.Pow(EindPoint.X - Startpoint.X, 2))) < 5)
             {
                 return true;
             }
@@ -49,72 +44,111 @@ namespace SchetsEditor
             return false;
         }
     }
+    public class Gumlijn : TwoPoint
+    {
+        public Gumlijn(Point p1, Point p2)
+        {
+            
+            Startpoint = p1;
+            EindPoint = p2;
+        }
 
-    public class GevuldeRechthoek : TwoPoint
-    {
-        public GevuldeRechthoek(Brush kleur, Point p1, Point p2)
+        public override void Draw(Graphics g)
         {
-            kwast = kleur;
-            startpoint = p1;
-            eindPoint = p2;
+            g.DrawLine(new Pen(Brushes.White, 7), Startpoint, EindPoint);
         }
-        public override void draw(Graphics g)
+
+        public override bool IsWithin(Point p1)
         {
-            g.FillRectangle(kwast, startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
+            return false;
         }
-        public override bool isWithin(Point p) { return true; }
     }
-    public class Rechthoek : TwoPoint
+
+    public class GevuldeRechthoek : Rechthoek
     {
-        public Rechthoek(Brush kleur, Point p1, Point p2)
+        public GevuldeRechthoek(Brush kleur, Point p1, Size p2) : base(kleur,p1,p2)
         {
-            kwast = kleur;
-            startpoint = p1;
-            eindPoint = p2;
         }
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g)
         {
-            g.DrawRectangle(new Pen(kwast,3), startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
+            g.FillRectangle(Kwast, RechthoekObject);
         }
-        public override bool isWithin(Point p) { return true; }
+
+        public override bool IsWithin(Point p)
+        {
+            if ((p.X < Startpoint.X + RechthoekObject.Width && p.X > Startpoint.X)&&
+                (p.Y < Startpoint.Y + RechthoekObject.Height && p.Y > Startpoint.Y)) return true;
+            return false;
+        }
     }
-    public class Cirkel : TwoPoint
+    public class Rechthoek : GraphicalObject
     {
-        public Cirkel(Brush kleur, Point p1, Point p2)
+        protected Rectangle RechthoekObject;
+        public Rechthoek(Brush kleur, Point p1, Size p2)
         {
-            kwast = kleur;
-            startpoint = p1;
-            eindPoint = p2;
+            Kwast = kleur;
+            RechthoekObject = new Rectangle(p1,p2);
+            Startpoint = RechthoekObject.Location;
         }
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g)
         {
-            g.DrawEllipse(new Pen(kwast, 3), startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
+            g.DrawRectangle(new Pen(Kwast,3), RechthoekObject);
         }
-        public override bool isWithin(Point p) { return true; }
+        public override bool IsWithin(Point p) {
+            if ((p.X < Startpoint.X + RechthoekObject.Width && p.X > Startpoint.X) &&
+                (p.Y < Startpoint.Y + RechthoekObject.Height && p.Y > Startpoint.Y))
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+    public class Cirkel : Rechthoek
+    {
+        public Cirkel(Brush kleur, Point p1, Size p2): base(kleur,p1,p2)
+        {
+        }
+        public override void Draw(Graphics g)
+        {
+            
+            g.DrawEllipse(new Pen(Kwast, 3), RechthoekObject);
+        }
+
+        public override bool IsWithin(Point p)
+        {
+            Point centre = new Point(RechthoekObject.Width / 2 + RechthoekObject.X,
+                RechthoekObject.Height / 2 + RechthoekObject.Y);
+            double xradius = RechthoekObject.Width / 2.0;
+            double yradius = RechthoekObject.Height / 2.0;
+            Point delta = new Point(p.X-centre.X,p.Y-centre.Y);
+            double cirkelValue =  (delta.X * delta.X) / (xradius * xradius) + delta.Y * delta.Y / (yradius * yradius);
+            return cirkelValue < 1.10 && cirkelValue > 0.90; 
+        }
     }
 
     public class Tekst : GraphicalObject
     {
 
-        protected char letter;
-        protected Font font;
+        protected char Letter;
+        protected Font Font;
         public Tekst(Brush kleur, Point p1, char c,Font f)
         {
-            font = f;
-            kwast = kleur;
-            startpoint = p1;
-            letter = c;
+            Font = f;
+            Kwast = kleur;
+            Startpoint = p1;
+            Letter = c;
         }
-        public override void draw(Graphics g)
+        public override void Draw(Graphics g)
         {
-            if (letter >= 32)
+            if (Letter >= 32)
             {
              
-                g.DrawString(letter.ToString(), font, kwast,startpoint, StringFormat.GenericTypographic);
+                g.DrawString(Letter.ToString(), Font, Kwast,Startpoint, StringFormat.GenericTypographic);
                 // gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 
             }
         }
-        public override bool isWithin(Point p) { return true; }
+        public override bool IsWithin(Point p) { return false; }
     }
 }

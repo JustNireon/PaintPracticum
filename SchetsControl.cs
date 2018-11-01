@@ -39,7 +39,7 @@ namespace SchetsEditor
             g.SmoothingMode = SmoothingMode.AntiAlias;
             return g;
         }
-        public Schets getSchets()
+        public Schets GetSchets()
         {
             return schets;
         }

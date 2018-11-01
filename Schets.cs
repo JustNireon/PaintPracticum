@@ -14,10 +14,7 @@ namespace SchetsEditor
             grlist = new List<GraphicalObject>();
             bitmap = new Bitmap(1,1);
         }
-        public Graphics BitmapGraphics
-        {
-            get { return Graphics.FromImage(bitmap); }
-        }
+        public Graphics BitmapGraphics => Graphics.FromImage(bitmap);
 
         public void AddGraphics(GraphicalObject t)
         {
@@ -39,20 +36,22 @@ namespace SchetsEditor
 
         public void RemoveObject(Point p1)
         {
-            for (int i = grlist.Count; i > -1; i--)
+            for (int i = grlist.Count-1; i > -1; i--)
             {
-                if (grlist[i].isWithin(p1))
+                if (grlist[i].IsWithin(p1))
                 {
                     grlist.RemoveAt(i);
+                    break;
                 }
             }
+            BitmapGraphics.Clear(Color.White);
 
         }
         public void Teken(Graphics gr, SchetsControl s)
         {
-            for (int i = 0; i < grlist.Count; i++)
+            foreach (GraphicalObject grobject in grlist)
             {
-                grlist[i].draw(BitmapGraphics);
+                grobject.Draw(BitmapGraphics);
             }
             gr.DrawImage(bitmap, 0, 0);
         }

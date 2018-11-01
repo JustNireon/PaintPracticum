@@ -39,8 +39,8 @@ namespace SchetsEditor
         }
 
         private void nieuw(object sender, EventArgs e)
-        {   SchetsWin s = new SchetsWin();
-            s.MdiParent = this;
+        {
+            SchetsWin s = new SchetsWin {MdiParent = this};
             s.Show();
         }
         private void afsluiten(object sender, EventArgs e)

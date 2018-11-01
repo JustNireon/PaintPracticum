@@ -45,7 +45,7 @@ namespace SchetsEditor
                 string tekst = c.ToString();
                 SizeF sz =
                     s.MaakBitmapGraphics().MeasureString(tekst, font, startpunt, StringFormat.GenericTypographic);
-                s.getSchets().AddGraphics(new Tekst(kwast, startpunt, c,font));
+                s.GetSchets().AddGraphics(new Tekst(kwast, startpunt, c,font));
                 startpunt.X += (int)sz.Width;
                 
                 
@@ -62,9 +62,12 @@ namespace SchetsEditor
                                 );
         }
         public static Pen MaakPen(Brush b, int dikte)
-        {   Pen pen = new Pen(b, dikte);
-            pen.StartCap = LineCap.Round;
-            pen.EndCap = LineCap.Round;
+        {
+            Pen pen = new Pen(b, dikte)
+            {
+                StartCap = LineCap.Round,
+                EndCap = LineCap.Round
+            };
             return pen;
         }
         public override void MuisVast(SchetsControl s, Point p)
@@ -73,7 +76,7 @@ namespace SchetsEditor
         }
         public override void MuisDrag(SchetsControl s, Point p)
         {   s.Refresh();
-            this.Bezig(s, this.startpunt, p);
+            this.Bezig(s, this.startpunt,p);
         }
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
@@ -99,7 +102,8 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.getSchets().AddGraphics(new Rechthoek(kwast, p1, p2));
+            Rectangle rect = Punten2Rechthoek(p1, p2);
+            s.GetSchets().AddGraphics(new Rechthoek(kwast, rect.Location, rect.Size));
         }
 
     }
@@ -110,7 +114,8 @@ namespace SchetsEditor
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.getSchets().AddGraphics(new GevuldeRechthoek(kwast, p1, p2));
+            Rectangle rect = Punten2Rechthoek(p1, p2);
+            s.GetSchets().AddGraphics(new GevuldeRechthoek(kwast, rect.Location, rect.Size));
         }
     }
 
@@ -123,7 +128,7 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.getSchets().AddGraphics(new lijn(kwast, p1, p2));
+            s.GetSchets().AddGraphics(new Lijn(kwast, p1, p2));
         }
 
     }
@@ -141,14 +146,23 @@ namespace SchetsEditor
     public class GumTool : PenTool
     {
         public override string ToString() { return "Gum"; }
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+           this.Bezig(s,startpunt,p);
+            startpunt = p;
 
+        }
         public override void Bezig(SchetsControl s, Point p1, Point p2)
-        {   s.CreateGraphics().DrawLine(MaakPen(Brushes.White, 7), p1, p2);
+        {
+            
+            s.GetSchets().AddGraphics(new Gumlijn(p1, p2));
+            s.Invalidate();
         }
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.getSchets().RemoveObject(p1);
+            s.GetSchets().RemoveObject(p1);
+            s.Invalidate();
         }
     }
     public class CirkelTool : TweepuntTool
@@ -161,7 +175,8 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.getSchets().AddGraphics(new Cirkel(kwast,p1,p2));
+            Rectangle rectcirc = Punten2Rechthoek(p1, p2);
+            s.GetSchets().AddGraphics(new Cirkel(kwast,rectcirc.Location,rectcirc.Size));
         }
     }
 }
