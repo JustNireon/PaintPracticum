@@ -61,7 +61,8 @@ namespace SchetsEditor
             this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             huidigeTool = deTools[0];
 
-            schetscontrol = new SchetsControl {Location = new Point(64, 10)};
+            schetscontrol = new SchetsControl();
+            schetscontrol.Location = new Point(64, 10);
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
                                        {   vast=true;  
                                            huidigeTool.MuisVast(schetscontrol, mea.Location); 
@@ -80,7 +81,8 @@ namespace SchetsEditor
                                        };
             this.Controls.Add(schetscontrol);
 
-            menuStrip = new MenuStrip {Visible = false};
+            menuStrip = new MenuStrip();
+            menuStrip.Visible = false;
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakToolMenu(deTools);
@@ -92,8 +94,9 @@ namespace SchetsEditor
         }
 
         private void maakFileMenu()
-        {
-            ToolStripMenuItem menu = new ToolStripMenuItem("File") {MergeAction = MergeAction.MatchOnly};
+        {   
+            ToolStripMenuItem menu = new ToolStripMenuItem("File");
+            menu.MergeAction = MergeAction.MatchOnly;
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
@@ -102,13 +105,10 @@ namespace SchetsEditor
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Tool");
             foreach (ISchetsTool tool in tools)
-            {
-                ToolStripItem item = new ToolStripMenuItem
-                {
-                    Tag = tool,
-                    Text = tool.ToString(),
-                    Image = (Image)resourcemanager.GetObject(tool.ToString())
-                };
+            {   ToolStripItem item = new ToolStripMenuItem();   
+                item.Tag = tool;
+                item.Text = tool.ToString();
+                item.Image = (Image)resourcemanager.GetObject(tool.ToString());
                 item.Click += this.klikToolMenu;
                 menu.DropDownItems.Add(item);
             }
@@ -132,18 +132,16 @@ namespace SchetsEditor
             int t = 0;
             foreach (ISchetsTool tool in tools)
             {
-                RadioButton b = new RadioButton
-                {
-                    Appearance = Appearance.Button,
-                    Size = new Size(45, 62),
-                    Location = new Point(10, 10 + t * 62),
-                    Tag = tool,
-                    Text = tool.ToString(),
-                    FlatStyle = FlatStyle.Flat
-                };
+                RadioButton b = new RadioButton();
+                b.Appearance = Appearance.Button;
+                b.Size = new Size(45, 62);
+                b.Location = new Point(10, 10 + t * 62);
+                b.Tag = tool;
+                b.Text = tool.ToString();
+                b.FlatStyle = FlatStyle.Flat;
                 b.FlatAppearance.BorderSize = 0;
                 b.FlatAppearance.CheckedBackColor = Color.FromArgb(70, 70, 70);
-                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(70, 70, 70);
+                b.FlatAppearance.MouseOverBackColor = Color.FromArgb(80, 80, 80);
                 b.FlatAppearance.MouseDownBackColor = Color.FromArgb(70, 70, 70);
                 b.Font = new Font("Segoe UI Light", 8.15f);
                 b.ForeColor = Color.White;
@@ -159,50 +157,47 @@ namespace SchetsEditor
         }
 
         private void maakAktieButtons(String[] kleuren)
-        {
-            paneel = new Panel {Size = new Size(600, 24)};
+        {   
+            paneel = new Panel();
+            paneel.Size = new Size(600, 24);
+            paneel.BorderStyle = BorderStyle.None;
             this.Controls.Add(paneel);
             
             Button b; Label l; ComboBox cbb;
-            b = new Button
-            {
-                Text = "Clear",
-                Location = new Point(0, 0)
-            };
-
-
+            b = new Button(); 
+            b.Text = "Clear";
+            b.ForeColor = Color.White;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Location = new Point(0, 0);
+            b.Font = new Font("Segoe UI", 8.15f);
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
-
-            b = new Button
-            {
-                Text = "Rotate",
-                Location = new Point(80, 0)
-            };
-
-
+            
+            b = new Button(); 
+            b.Text = "Rotate";
+            b.ForeColor = Color.White;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Location = new Point( 80, 0);
+            b.Font = new Font("Segoe UI", 8.15f);
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
-
-            l = new Label
-            {
-                Text = "Penkleur:",
-                Location = new Point(180, 3),
-                AutoSize = true
-            };
-
-
-
+            
+            l = new Label();  
+            l.Text = "Penkleur:";
+            l.ForeColor = Color.White;
+            l.Location = new Point(180, 3); 
+            l.AutoSize = true;
+            l.Font = new Font("Segoe UI Light", 8.15f);
             paneel.Controls.Add(l);
-
-            cbb = new ComboBox {Location = new Point(240, 0)};
-            cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
+            
+            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
+            cbb.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbb.Font = new Font("Segoe UI", 8.15f);
+            cbb.BackColor = Color.FromArgb(40, 40, 40);
+            cbb.ForeColor = Color.White;
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)
-            {
                 cbb.Items.Add(k);
-            }
-
             cbb.SelectedIndex = 0;
             paneel.Controls.Add(cbb);
         }
