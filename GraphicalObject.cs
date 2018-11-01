@@ -60,8 +60,9 @@ namespace SchetsEditor
         }
         public override void draw(Graphics g)
         {
-            g.FillRectangle(kwast, startpoint.X,startpoint.Y,eindPoint.X-startpoint.X,eindPoint.Y-startpoint.Y);
+            g.FillRectangle(kwast, startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
         }
+        public override bool isWithin(Point p) { return true; }
     }
     public class Rechthoek : TwoPoint
     {
@@ -75,6 +76,7 @@ namespace SchetsEditor
         {
             g.DrawRectangle(new Pen(kwast,3), startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
         }
+        public override bool isWithin(Point p) { return true; }
     }
     public class Cirkel : TwoPoint
     {
@@ -88,6 +90,7 @@ namespace SchetsEditor
         {
             g.DrawEllipse(new Pen(kwast, 3), startpoint.X, startpoint.Y, eindPoint.X - startpoint.X, eindPoint.Y - startpoint.Y);
         }
+        public override bool isWithin(Point p) { return true; }
     }
 
     public class Tekst : GraphicalObject
@@ -112,5 +115,6 @@ namespace SchetsEditor
                 
             }
         }
+        public override bool isWithin(Point p) { return true; }
     }
 }

@@ -29,7 +29,7 @@ namespace SchetsEditor
 
     public class TekstTool : StartpuntTool
     {
-        public override string ToString() { return "tekst"; }
+        public override string ToString() { return "Tekst"; }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
 
@@ -92,7 +92,7 @@ namespace SchetsEditor
 
     public class RechthoekTool : TweepuntTool
     {
-        public override string ToString() { return "kader"; }
+        public override string ToString() { return "Kader"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
         {   s.CreateGraphics().DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
@@ -106,7 +106,7 @@ namespace SchetsEditor
     
     public class VolRechthoekTool : RechthoekTool
     {
-        public override string ToString() { return "vlak"; }
+        public override string ToString() { return "Vlak"; }
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
@@ -116,7 +116,7 @@ namespace SchetsEditor
 
     public class LijnTool : TweepuntTool
     {
-        public override string ToString() { return "lijn"; }
+        public override string ToString() { return "Lijn"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
         {   s.CreateGraphics().DrawLine(MaakPen(this.kwast,3), p1, p2);
@@ -130,7 +130,7 @@ namespace SchetsEditor
 
     public class PenTool : LijnTool
     {
-        public override string ToString() { return "pen"; }
+        public override string ToString() { return "Pen"; }
 
         public override void MuisDrag(SchetsControl s, Point p)
         {   this.MuisLos(s, p);
@@ -140,7 +140,7 @@ namespace SchetsEditor
     
     public class GumTool : PenTool
     {
-        public override string ToString() { return "gum"; }
+        public override string ToString() { return "Gum"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
         {   s.CreateGraphics().DrawLine(MaakPen(Brushes.White, 7), p1, p2);
