@@ -58,7 +58,7 @@ namespace SchetsEditor
                                  , "Yellow", "Magenta", "Cyan" 
                                  };
 
-            this.ClientSize = new Size(700, 500);
+            this.ClientSize = new Size(700, 600);
             this.BackColor = Color.FromArgb(40,40,40);
             this.FormBorderStyle = FormBorderStyle.SizableToolWindow;
             huidigeTool = deTools[0];
@@ -142,7 +142,7 @@ namespace SchetsEditor
                 RadioButton b = new RadioButton
                 {
                     Appearance = Appearance.Button,
-                    Size = new Size(45, 62),
+                    Size = new Size(55, 62),
                     Location = new Point(10, 10 + t * 62),
                     Tag = tool,
                     Text = tool.ToString(),
