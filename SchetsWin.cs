@@ -127,27 +127,35 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
-            ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
-            foreach (string k in kleuren)
-                submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
-            menu.DropDownItems.Add(submenu);
+            menu.DropDownItems.Add("Undo", null, schetscontrol.Undo);
+            menu.DropDownItems.Add("Kleur", null, schetscontrol.VeranderKleur);
             menuStrip.Items.Add(menu);
         }
 
         private void maakToolButtons(ICollection<ISchetsTool> tools)
         {
             int t = 0;
+            int j = 0;
             foreach (ISchetsTool tool in tools)
             {
                 RadioButton b = new RadioButton
                 {
                     Appearance = Appearance.Button,
-                    Size = new Size(55, 62),
-                    Location = new Point(10, 10 + t * 62),
+                    Location = new Point(10, 10 + t * 62+j),
                     Tag = tool,
                     Text = tool.ToString(),
                     FlatStyle = FlatStyle.Flat
                 };
+                if (tool.ToString() != "GevuldeCirkel")
+                {
+
+                    b.Size = new Size(55, 62);
+                }
+                else
+                {
+                    b.Size = new Size(55, 75);
+                    j = 13;
+                }
                 b.FlatAppearance.BorderSize = 0;
                 b.FlatAppearance.CheckedBackColor = Color.FromArgb(70, 70, 70);
                 b.FlatAppearance.MouseOverBackColor = Color.FromArgb(80, 80, 80);
@@ -172,7 +180,7 @@ namespace SchetsEditor
             paneel.BorderStyle = BorderStyle.None;
             this.Controls.Add(paneel);
             
-            Button b; Label l; ComboBox cbb;
+            Button b; Label l; ColorDialog cbb;
             b = new Button(); 
             b.Text = "Clear";
             b.FlatAppearance.BorderSize = 1;
@@ -194,31 +202,40 @@ namespace SchetsEditor
             b.Location = new Point( 80, 0); 
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
-            
+
+            b = new Button();
+            b.Text = "Undo";
+            b.FlatAppearance.BorderSize = 1;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Font = new Font("Segoe UI", 8.25f);
+            b.ForeColor = Color.White;
+            b.BackColor = Color.FromArgb(40, 40, 40);
+            b.Location = new Point(160, 0);
+            b.Click += schetscontrol.Undo;
+            paneel.Controls.Add(b);
+
             l = new Label();  
             l.Text = "Penkleur:";
             l.Font = new Font("Segoe UI", 8.25f);
             l.ForeColor = Color.White;
-            l.Location = new Point(180, 3); 
+            l.Location = new Point(240, 3); 
             l.AutoSize = true;               
             paneel.Controls.Add(l);
-            
-            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
-            cbb.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbb.FlatStyle = FlatStyle.Flat;
-            cbb.Font = new Font("Segoe UI", 8.25f);
-            cbb.ForeColor = Color.White;
-            cbb.BackColor = Color.FromArgb(40, 40, 40);
-            cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
-            foreach (string k in kleuren)
-            {
-                cbb.Items.Add(k);
-            }
 
-            cbb.SelectedIndex = 0;
-            paneel.Controls.Add(cbb);
+            b = new Button();
+            b.Text = "Kleur";
+            b.FlatAppearance.BorderSize = 1;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Font = new Font("Segoe UI", 8.25f);
+            b.ForeColor = Color.White;
+            b.BackColor = Color.FromArgb(40, 40, 40);
+            b.Location = new Point(300, 0);
+            b.Click += schetscontrol.VeranderKleur;
+            paneel.Controls.Add(b);
+
         }
 
+        
         private void InitializeComponent()
         {
             this.SuspendLayout();

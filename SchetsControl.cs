@@ -54,14 +54,24 @@ namespace SchetsEditor
             schets.Roteer();
             this.Invalidate();
         }
+
+        public void Undo(object o, EventArgs ea)
+        {
+            if (schets.grlist.Count > 0)
+            {
+                schets.grlist.RemoveRange(schets.grlist.Count - 1, 1);
+                Invalidate();
+            }
+        }
+
+        
         public void VeranderKleur(object obj, EventArgs ea)
-        {   string kleurNaam = ((ComboBox)obj).Text;
-            penkleur = Color.FromName(kleurNaam);
+        {   ColorDialog cd = new ColorDialog();
+            if(cd.ShowDialog() == DialogResult.OK)
+            penkleur = cd.Color;
+            
         }
-        public void VeranderKleurViaMenu(object obj, EventArgs ea)
-        {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
-            penkleur = Color.FromName(kleurNaam);
-        }
+        
         public void SaveArt(object obj, EventArgs ea)
         {
             this.Invalidate();

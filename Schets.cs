@@ -39,6 +39,7 @@ namespace SchetsEditor
 
         public void RemoveObject(Point p1)
         {
+            
             for (int i = grlist.Count-1; i > -1; i--)
             {
                 if (grlist[i].IsWithin(p1))
@@ -52,7 +53,7 @@ namespace SchetsEditor
         }
         public void Teken(Graphics gr, SchetsControl s)
         {
-            
+            BitmapGraphics.Clear(Color.White);
             foreach (GraphicalObject grobject in grlist)
             {
                 grobject.Draw(BitmapGraphics);
