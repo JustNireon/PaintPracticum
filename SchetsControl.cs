@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SchetsEditor
@@ -65,6 +66,11 @@ namespace SchetsEditor
         {
             this.Invalidate();
             schets.Save();
+        }
+        public void Openen(StreamReader sr)
+        {
+            schets.Openen(sr);
+            this.Invalidate();
         }
     }
 }

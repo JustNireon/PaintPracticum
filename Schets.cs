@@ -52,6 +52,7 @@ namespace SchetsEditor
         }
         public void Teken(Graphics gr, SchetsControl s)
         {
+            Debug.WriteLine(grlist.Count);
             foreach (GraphicalObject grobject in grlist)
             {
                 grobject.Draw(BitmapGraphics);
@@ -75,7 +76,7 @@ namespace SchetsEditor
         public void Save()
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Paint Image|*.png|list Lijst|.txt";
+            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Paint Image|*.png|list Lijst|.schets";
             saveFileDialog1.Title = "Save an Image File";
             saveFileDialog1.ShowDialog();
             if (saveFileDialog1.FileName != "")
@@ -118,5 +119,43 @@ namespace SchetsEditor
             fs.Write(info,0,info.Length);
             
         }
+        public void Openen(StreamReader sr)
+        {
+            string s;
+            char[] seperator = {'.'};
+            char[] XYseperator = {','};
+            string[] values;
+            string[] XY;
+            string[] XY2;
+            while ((s = sr.ReadLine()) != null)
+            {
+                values = s.Split(seperator, StringSplitOptions.RemoveEmptyEntries);
+                XY = values[2].Split(XYseperator, StringSplitOptions.RemoveEmptyEntries);
+                XY2 = values[3].Split(XYseperator, StringSplitOptions.RemoveEmptyEntries);
+                Debug.WriteLine(s);
+                switch (values[0])
+                {
+                    
+                    case "Lijn":
+                        grlist.Add(new Lijn(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]),int.Parse(XY[1])),new Point(int.Parse(XY2[0]),int.Parse(XY2[1]))));
+                        break;
+                    case "Gumlijn":
+                        grlist.Add(new Gumlijn(new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Point(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        break;
+                    case "Rechthoek":
+                        grlist.Add(new Rechthoek(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Size(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        break;
+                    case "GevuldeRechthoek":
+                        grlist.Add(new GevuldeRechthoek(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Size(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        break;
+                    case "Cirkel":
+                        grlist.Add(new Cirkel(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Size(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        break;
+                }
+            }
+
+            
+        }
+
     }
 }
