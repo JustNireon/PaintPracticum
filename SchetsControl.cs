@@ -61,5 +61,10 @@ namespace SchetsEditor
         {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
             penkleur = Color.FromName(kleurNaam);
         }
+        public void SaveArt(object obj, EventArgs ea)
+        {
+            this.Invalidate();
+            schets.Save();
+        }
     }
 }

@@ -10,12 +10,16 @@ namespace SchetsEditor
 
         public abstract void Draw(Graphics g);
         public abstract bool IsWithin(Point p);
+        public abstract override string ToString();
     }
 
     public abstract class TwoPoint : GraphicalObject
     {
-
         protected Point EindPoint;
+        public override string ToString()
+        {
+            return GetType().Name + '-' + new Pen(Kwast).Color.Name + "-" + Startpoint.X + ',' + Startpoint.Y + '-' + EindPoint.X + ',' + EindPoint.Y;
+        }
     }
 
     public class Lijn : TwoPoint
@@ -31,6 +35,8 @@ namespace SchetsEditor
         {
             g.DrawLine(new Pen(Kwast,3), Startpoint,EindPoint);
         }
+
+
 
         public override bool IsWithin(Point p1)
         {
@@ -48,7 +54,8 @@ namespace SchetsEditor
     {
         public Gumlijn(Point p1, Point p2)
         {
-            
+
+            Kwast = Brushes.White;
             Startpoint = p1;
             EindPoint = p2;
         }
@@ -94,6 +101,15 @@ namespace SchetsEditor
         {
             g.DrawRectangle(new Pen(Kwast,3), RechthoekObject);
         }
+
+        public override string ToString()
+        {
+            return GetType().Name + "-" + new Pen(Kwast).Color.Name + "-" + RechthoekObject.Location.X + ',' +
+                   RechthoekObject.Location.Y + "-" + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height;
+
+
+        }
+
         public override bool IsWithin(Point p) {
             if ((p.X < Startpoint.X + RechthoekObject.Width && p.X > Startpoint.X) &&
                 (p.Y < Startpoint.Y + RechthoekObject.Height && p.Y > Startpoint.Y))
@@ -149,6 +165,12 @@ namespace SchetsEditor
                 
             }
         }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool IsWithin(Point p) { return false; }
     }
 }

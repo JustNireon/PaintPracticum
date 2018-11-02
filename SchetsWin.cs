@@ -14,7 +14,6 @@ namespace SchetsEditor
         ISchetsTool huidigeTool;
         Panel paneel;
         bool vast;
-        List<GraphicalObject> grlist = new List<GraphicalObject>();
         ResourceManager resourcemanager
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
@@ -94,6 +93,7 @@ namespace SchetsEditor
         private void maakFileMenu()
         {
             ToolStripMenuItem menu = new ToolStripMenuItem("File") {MergeAction = MergeAction.MatchOnly};
+            menu.DropDownItems.Add("Opslaan", null, schetscontrol.SaveArt);
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
