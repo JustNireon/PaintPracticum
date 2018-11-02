@@ -62,7 +62,7 @@ namespace SchetsEditor
 
         public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(Brushes.White, 7), Startpoint, EindPoint);
+            g.DrawLine(new Pen(Brushes.White, 3), Startpoint, EindPoint);
         }
 
         public override bool IsWithin(Point p1)

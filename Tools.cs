@@ -145,24 +145,29 @@ namespace SchetsEditor
     
     public class GumTool : PenTool
     {
+        protected bool muismoved = false;
         public override string ToString() { return "Gum"; }
         public override void MuisDrag(SchetsControl s, Point p)
         {
+           muismoved = true;
            this.Bezig(s,startpunt,p);
             startpunt = p;
 
         }
         public override void Bezig(SchetsControl s, Point p1, Point p2)
         {
-            
             s.GetSchets().AddGraphics(new Gumlijn(p1, p2));
             s.Invalidate();
         }
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
-        {
-            s.GetSchets().RemoveObject(p1);
-            s.Invalidate();
+           {
+            if (!muismoved)
+            {
+                s.GetSchets().RemoveObject(p1);
+                s.Invalidate();
+            }
+            muismoved = false;
         }
     }
     public class CirkelTool : TweepuntTool
