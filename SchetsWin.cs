@@ -24,7 +24,7 @@ namespace SchetsEditor
         {
             schetscontrol.Size = new Size ( this.ClientSize.Width  - 70
                                           , this.ClientSize.Height - 50);
-            paneel.Location = new Point(64, this.ClientSize.Height - 30);
+            paneel.Location = new Point(96, this.ClientSize.Height - 30);
         }
 
         private void klikToolMenu(object obj, EventArgs ea)
@@ -48,9 +48,11 @@ namespace SchetsEditor
                                     , new LijnTool()
                                     , new RechthoekTool()
                                     , new VolRechthoekTool()
-                                    , new TekstTool()
-                                    , new GumTool()
                                     , new CirkelTool()
+                                    , new GevuldeCirkelTool()
+                                    , new TekstTool()                    
+                                    , new GumTool()
+                                    
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
                                  , "Yellow", "Magenta", "Cyan" 

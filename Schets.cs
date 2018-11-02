@@ -52,7 +52,7 @@ namespace SchetsEditor
         }
         public void Teken(Graphics gr, SchetsControl s)
         {
-            Debug.WriteLine(grlist.Count);
+            
             foreach (GraphicalObject grobject in grlist)
             {
                 grobject.Draw(BitmapGraphics);
@@ -67,7 +67,7 @@ namespace SchetsEditor
             grlist.Clear();
 
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
-        }
+        }   
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);

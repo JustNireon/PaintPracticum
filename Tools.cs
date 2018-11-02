@@ -194,4 +194,14 @@ Pen dashedPen = new Pen(Color.Black, 1);
             s.GetSchets().AddGraphics(new Cirkel(kwast,rectcirc.Location,rectcirc.Size));
         }
     }
+
+    public class GevuldeCirkelTool : CirkelTool
+    {
+        public override string ToString() { return "GevuldeCirkel"; }
+        public override void Compleet(SchetsControl s, Point p1, Point p2)
+        {
+            Rectangle rectcirc = Punten2Rechthoek(p1, p2);
+            s.GetSchets().AddGraphics(new GevuldeCirkel(kwast, rectcirc.Location, rectcirc.Size));
+        }
+    }
 }
