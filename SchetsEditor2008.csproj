@@ -138,4 +138,7 @@
   <ItemGroup>
     <None Include="Resources\Lijn.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gevulde Cirkel.png" />
+  </ItemGroup>
 </Project>
