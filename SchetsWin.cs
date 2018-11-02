@@ -172,25 +172,41 @@ namespace SchetsEditor
             
             Button b; Label l; ComboBox cbb;
             b = new Button(); 
-            b.Text = "Clear";  
+            b.Text = "Clear";
+            b.FlatAppearance.BorderSize = 1;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Font = new Font("Segoe UI", 8.25f);
+            b.ForeColor = Color.White;
+            b.BackColor = Color.FromArgb(40, 40, 40);
             b.Location = new Point(  0, 0); 
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
             
             b = new Button(); 
-            b.Text = "Rotate"; 
+            b.Text = "Rotate";
+            b.FlatAppearance.BorderSize = 1;
+            b.FlatStyle = FlatStyle.Flat;
+            b.Font = new Font("Segoe UI", 8.25f);
+            b.ForeColor = Color.White;
+            b.BackColor = Color.FromArgb(40, 40, 40);
             b.Location = new Point( 80, 0); 
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
             
             l = new Label();  
-            l.Text = "Penkleur:"; 
+            l.Text = "Penkleur:";
+            l.Font = new Font("Segoe UI", 8.25f);
+            l.ForeColor = Color.White;
             l.Location = new Point(180, 3); 
             l.AutoSize = true;               
             paneel.Controls.Add(l);
             
             cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
-            cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
+            cbb.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbb.FlatStyle = FlatStyle.Flat;
+            cbb.Font = new Font("Segoe UI", 8.25f);
+            cbb.ForeColor = Color.White;
+            cbb.BackColor = Color.FromArgb(40, 40, 40);
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)
             {
