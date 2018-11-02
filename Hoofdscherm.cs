@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SchetsEditor
@@ -21,6 +22,7 @@ namespace SchetsEditor
         {   ToolStripDropDownItem menu;
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
+            menu.DropDownItems.Add("Openen", null, this.openen);
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
             menuStrip.Items.Add(menu);
         }
@@ -42,6 +44,21 @@ namespace SchetsEditor
         {
             SchetsWin s = new SchetsWin {MdiParent = this};
             s.Show();
+        }
+        private void openen(object sender, EventArgs e)
+        {
+            OpenFileDialog fi = new OpenFileDialog();
+            fi.Title = "Open a .Schets file";
+            fi.Filter = "Schets file|*.Schets";
+            if (fi.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+
+                StreamReader sr = new StreamReader(fi.FileName);
+                SchetsWin s = new SchetsWin(sr) { MdiParent = this };
+                s.Show();
+            }
+            
+            
         }
         private void afsluiten(object sender, EventArgs e)
         {   this.Close();

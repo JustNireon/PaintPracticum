@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 
 namespace SchetsEditor
@@ -18,7 +19,7 @@ namespace SchetsEditor
         protected Point EindPoint;
         public override string ToString()
         {
-            return GetType().Name + '-' + new Pen(Kwast).Color.Name + "-" + Startpoint.X + ',' + Startpoint.Y + '-' + EindPoint.X + ',' + EindPoint.Y;
+            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." + EindPoint.X + ',' + EindPoint.Y;
         }
     }
 
@@ -40,13 +41,15 @@ namespace SchetsEditor
 
         public override bool IsWithin(Point p1)
         {
-            if ((Math.Abs((EindPoint.Y - Startpoint.Y) * p1.X - (EindPoint.X - Startpoint.X) * p1.Y +
+            double t;
+            if (((t = Math.Abs((EindPoint.Y - Startpoint.Y) * p1.X - (EindPoint.X - Startpoint.X) * p1.Y +
                           EindPoint.X * Startpoint.Y - EindPoint.Y * Startpoint.X) /
-                Math.Sqrt(Math.Pow(EindPoint.Y - Startpoint.Y, 2) + Math.Pow(EindPoint.X - Startpoint.X, 2))) < 5)
+                Math.Sqrt(Math.Pow(EindPoint.Y - Startpoint.Y, 2) + Math.Pow(EindPoint.X - Startpoint.X, 2))) < 1))
             {
+                Debug.WriteLine(t);   
                 return true;
             }
-
+            Debug.WriteLine(t);
             return false;
         }
     }
@@ -104,8 +107,8 @@ namespace SchetsEditor
 
         public override string ToString()
         {
-            return GetType().Name + "-" + new Pen(Kwast).Color.Name + "-" + RechthoekObject.Location.X + ',' +
-                   RechthoekObject.Location.Y + "-" + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height;
+            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + RechthoekObject.Location.X + ',' +
+                   RechthoekObject.Location.Y + "." + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height;
 
 
         }

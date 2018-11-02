@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Resources;
@@ -41,8 +42,8 @@ namespace SchetsEditor
             this.Close();
         }
 
-        public SchetsWin()
-        {
+        public SchetsWin(StreamReader sr = null)
+        { 
             ISchetsTool[] deTools = { new PenTool()         
                                     , new LijnTool()
                                     , new RechthoekTool()
@@ -86,6 +87,10 @@ namespace SchetsEditor
             this.maakAktieMenu(deKleuren);
             this.maakToolButtons(deTools);
             this.maakAktieButtons(deKleuren);
+            if (sr != null)
+            {
+                schetscontrol.Openen(sr);
+            }
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
