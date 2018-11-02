@@ -133,9 +133,9 @@
     <None Include="Resources\text.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\lijn.png" />
+    <None Include="Resources\cirkel.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\cirkel.png" />
+    <None Include="Resources\Lijn.png" />
   </ItemGroup>
 </Project>

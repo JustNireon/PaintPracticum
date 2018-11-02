@@ -16,7 +16,7 @@ namespace SchetsEditor
     {
         protected Point startpunt;
         protected Brush kwast;
-
+        public float[] dashValues = { 2, 2 };
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
         }
@@ -98,7 +98,11 @@ namespace SchetsEditor
         public override string ToString() { return "Kader"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
-        {   s.CreateGraphics().DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
+        {
+            Pen dashedPen = new Pen(Color.Black, 1);
+            dashedPen.DashPattern = dashValues;
+            s.CreateGraphics().DrawRectangle(dashedPen, TweepuntTool.Punten2Rechthoek(p1, p2));
+
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
@@ -124,7 +128,10 @@ namespace SchetsEditor
         public override string ToString() { return "Lijn"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
-        {   s.CreateGraphics().DrawLine(MaakPen(this.kwast,3), p1, p2);
+        {
+            Pen dashedPen = new Pen(Color.Black, 1);
+            dashedPen.DashPattern = dashValues;
+            s.CreateGraphics().DrawLine(dashedPen, p1, p2);
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
@@ -172,11 +179,14 @@ namespace SchetsEditor
     }
     public class CirkelTool : TweepuntTool
     {
+
         public override string ToString() { return "Cirkel"; }
 
         public override void Bezig(SchetsControl s, Point p1, Point p2)
         {
-            s.CreateGraphics().DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+Pen dashedPen = new Pen(Color.Black, 1);
+            dashedPen.DashPattern = dashValues;
+            s.CreateGraphics().DrawEllipse(dashedPen, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
