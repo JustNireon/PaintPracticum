@@ -138,10 +138,10 @@ namespace SchetsEditor
                 {
                     
                     case "Lijn":
-                        grlist.Add(new Lijn(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]),int.Parse(XY[1])),new Point(int.Parse(XY2[0]),int.Parse(XY2[1]))));
+                        grlist.Add(new Lijn(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]),int.Parse(XY[1])),new Point(int.Parse(XY2[0]),int.Parse(XY2[1])),int.Parse(values[4])));
                         break;
                     case "Gumlijn":
-                        grlist.Add(new Gumlijn(new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Point(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        grlist.Add(new Gumlijn(new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Point(int.Parse(XY2[0]), int.Parse(XY2[1])),int.Parse(values[4])));
                         break;
                     case "Rechthoek":
                         grlist.Add(new Rechthoek(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Size(int.Parse(XY2[0]), int.Parse(XY2[1]))));

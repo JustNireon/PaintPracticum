@@ -9,15 +9,21 @@ namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
+        private int dikte;
 
         public Color PenKleur
         { get { return penkleur; }
+        }
+        public int Dikte
+        {
+            get { return dikte; }
         }
         public Schets Schets
         { get { return schets;   }
         }
         public SchetsControl()
         {
+            penkleur = Color.Black;
             this.BorderStyle = BorderStyle.Fixed3D;
             this.schets = new Schets();
             this.Paint += this.teken;
@@ -71,7 +77,11 @@ namespace SchetsEditor
             penkleur = cd.Color;
             
         }
-        
+        public void VeranderDikte(int val)
+        {
+            dikte = val;
+        }
+
         public void SaveArt(object obj, EventArgs ea)
         {
             this.Invalidate();

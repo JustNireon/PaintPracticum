@@ -16,9 +16,11 @@ namespace SchetsEditor
     {
         protected Point startpunt;
         protected Brush kwast;
+        protected int dikte;
         public float[] dashValues = { 2, 2 };
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
+            dikte = s.Dikte;
         }
         public virtual void MuisLos(SchetsControl s, Point p)
         {   kwast = new SolidBrush(s.PenKleur);
@@ -107,7 +109,7 @@ namespace SchetsEditor
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
             Rectangle rect = Punten2Rechthoek(p1, p2);
-            s.GetSchets().AddGraphics(new Rechthoek(kwast, rect.Location, rect.Size));
+            s.GetSchets().AddGraphics(new Rechthoek(kwast, rect.Location, rect.Size,dikte));
         }
 
     }
@@ -135,7 +137,7 @@ namespace SchetsEditor
         }
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
-            s.GetSchets().AddGraphics(new Lijn(kwast, p1, p2));
+            s.GetSchets().AddGraphics(new Lijn(kwast, p1, p2,dikte));
         }
 
     }
@@ -145,8 +147,11 @@ namespace SchetsEditor
         public override string ToString() { return "Pen"; }
 
         public override void MuisDrag(SchetsControl s, Point p)
-        {   this.MuisLos(s, p);
-            this.MuisVast(s, p);
+        {
+            kwast = new SolidBrush(s.PenKleur);
+            this.Compleet(s,startpunt,p);
+            startpunt = p;
+            s.Invalidate();
         }
     }
     
@@ -157,14 +162,10 @@ namespace SchetsEditor
         public override void MuisDrag(SchetsControl s, Point p)
         {
            muismoved = true;
-           this.Bezig(s,startpunt,p);
+            s.GetSchets().AddGraphics(new Gumlijn(startpunt, p,dikte));
             startpunt = p;
-
-        }
-        public override void Bezig(SchetsControl s, Point p1, Point p2)
-        {
-            s.GetSchets().AddGraphics(new Gumlijn(p1, p2));
             s.Invalidate();
+
         }
 
         public override void Compleet(SchetsControl s, Point p1, Point p2)
@@ -191,7 +192,7 @@ Pen dashedPen = new Pen(Color.Black, 1);
         public override void Compleet(SchetsControl s, Point p1, Point p2)
         {
             Rectangle rectcirc = Punten2Rechthoek(p1, p2);
-            s.GetSchets().AddGraphics(new Cirkel(kwast,rectcirc.Location,rectcirc.Size));
+            s.GetSchets().AddGraphics(new Cirkel(kwast,rectcirc.Location,rectcirc.Size,dikte));
         }
     }
 
@@ -202,6 +203,47 @@ Pen dashedPen = new Pen(Color.Black, 1);
         {
             Rectangle rectcirc = Punten2Rechthoek(p1, p2);
             s.GetSchets().AddGraphics(new GevuldeCirkel(kwast, rectcirc.Location, rectcirc.Size));
+        }
+    }
+    public class LagenTool : StartpuntTool
+    {
+        public override string ToString() { return "Lagen"; }
+
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+            return;
+            
+        }
+
+        public override void Letter(SchetsControl s, char c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            for (int i = s.Schets.grlist.Count-1; i > -1; i--)
+            {
+                if (s.Schets.grlist[i].IsWithin(p))
+                {
+                    
+                    GraphicalObject g = s.Schets.grlist[i];
+                    s.Schets.grlist.RemoveAt(i);
+                    if (i == s.Schets.grlist.Count)
+                    {
+                        s.Schets.grlist.Insert(0, g);
+                    }
+                    else
+                    {
+                        s.Schets.grlist.Add(g);
+                    }
+
+                    break;
+                }
+            }
+
+            s.Invalidate();
         }
     }
 }

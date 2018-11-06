@@ -27,16 +27,18 @@ namespace SchetsEditor
 
     public class Lijn : TwoPoint
     {
-        public Lijn(Brush kleur, Point p1, Point p2)
+        private int Dikte;
+        public Lijn(Brush kleur, Point p1, Point p2,int dikte)
         {
             Kwast = kleur;
             Startpoint = p1;
             EindPoint = p2;
+            Dikte = dikte;
         }
 
         public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(Kwast, 3), Startpoint, EindPoint);
+            g.DrawLine(new Pen(Kwast, Dikte), Startpoint, EindPoint);
         }
 
 
@@ -54,26 +56,38 @@ namespace SchetsEditor
 
             return false;
         }
+        public override string ToString()
+        {
+            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." +
+                   EindPoint.X + ',' + EindPoint.Y + '.' + Dikte;
+        }
     }
 
     public class Gumlijn : TwoPoint
     {
-        public Gumlijn(Point p1, Point p2)
+        private int Dikte;
+        public Gumlijn(Point p1, Point p2, int dikte)
         {
 
             Kwast = Brushes.White;
             Startpoint = p1;
             EindPoint = p2;
+            Dikte = dikte;
         }
 
         public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(Brushes.White, 3), Startpoint, EindPoint);
+            g.DrawLine(new Pen(Brushes.White, Dikte), Startpoint, EindPoint);
         }
 
         public override bool IsWithin(Point p1)
         {
             return false;
+        }
+        public override string ToString()
+        {
+            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." +
+                   EindPoint.X + ',' + EindPoint.Y + '.' + Dikte;
         }
     }
 
@@ -99,23 +113,24 @@ namespace SchetsEditor
     public class Rechthoek : GraphicalObject
     {
         protected Rectangle RechthoekObject;
-
-        public Rechthoek(Brush kleur, Point p1, Size p2)
+        protected int Dikte;
+        public Rechthoek(Brush kleur, Point p1, Size p2, int dikte = 0)
         {
             Kwast = kleur;
             RechthoekObject = new Rectangle(p1, p2);
+            Dikte = dikte;
             Startpoint = RechthoekObject.Location;
         }
 
         public override void Draw(Graphics g)
         {
-            g.DrawRectangle(new Pen(Kwast, 3), RechthoekObject);
+            g.DrawRectangle(new Pen(Kwast, Dikte), RechthoekObject);
         }
 
         public override string ToString()
         {
             return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + RechthoekObject.Location.X + ',' +
-                   RechthoekObject.Location.Y + "." + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height;
+                   RechthoekObject.Location.Y + "." + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height+'.'+Dikte;
 
 
         }
@@ -134,14 +149,14 @@ namespace SchetsEditor
 
     public class Cirkel : Rechthoek
     {
-        public Cirkel(Brush kleur, Point p1, Size p2) : base(kleur, p1, p2)
+        public Cirkel(Brush kleur, Point p1, Size p2,int Dikte=0) : base(kleur, p1, p2,Dikte)
         {
         }
 
         public override void Draw(Graphics g)
         {
 
-            g.DrawEllipse(new Pen(Kwast, 3), RechthoekObject);
+            g.DrawEllipse(new Pen(Kwast, Dikte), RechthoekObject);
         }
 
         public override bool IsWithin(Point p)

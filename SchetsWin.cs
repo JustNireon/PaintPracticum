@@ -15,6 +15,7 @@ namespace SchetsEditor
         ISchetsTool huidigeTool;
         Panel paneel;
         bool vast;
+        NumericUpDown d;
         ResourceManager resourcemanager
             = new ResourceManager("SchetsEditor.Properties.Resources"
                                  , Assembly.GetExecutingAssembly()
@@ -52,6 +53,7 @@ namespace SchetsEditor
                                     , new GevuldeCirkelTool()
                                     , new TekstTool()                    
                                     , new GumTool()
+                                    , new LagenTool()
                                     
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
@@ -181,6 +183,7 @@ namespace SchetsEditor
             this.Controls.Add(paneel);
             
             Button b; Label l; ColorDialog cbb;
+            
             b = new Button(); 
             b.Text = "Clear";
             b.FlatAppearance.BorderSize = 1;
@@ -232,7 +235,27 @@ namespace SchetsEditor
             b.Location = new Point(300, 0);
             b.Click += schetscontrol.VeranderKleur;
             paneel.Controls.Add(b);
+            l = new Label();
+            l.Text = "Pen Dikte:";
+            l.Font = new Font("Segoe UI", 8.25f);
+            l.ForeColor = Color.White;
+            l.Location = new Point(380, 3);
+            l.AutoSize = true;
+            paneel.Controls.Add(l);
 
+            d = new NumericUpDown();
+            d.Value = 3;
+            d.Location = new Point(440, 0);
+            d.Maximum = 99;
+            d.Minimum = 1;
+            d.ValueChanged += veranderDikte;
+            paneel.Controls.Add(d);
+
+        }
+
+        private void veranderDikte(object obj, EventArgs ea)
+        {
+            schetscontrol.VeranderDikte((int)d.Value);
         }
 
         
