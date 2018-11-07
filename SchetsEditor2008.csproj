@@ -141,4 +141,10 @@
   <ItemGroup>
     <None Include="Resources\Gevulde Cirkel.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lagen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="readme.txt" />
+  </ItemGroup>
 </Project>
