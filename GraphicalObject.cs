@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SchetsEditor
 {
@@ -9,22 +10,38 @@ namespace SchetsEditor
         protected Brush Kwast;
         protected Point Startpoint;
 
+        // Is voor elk grafisch object een functie die de vorm tekent die de klasse vertegenwoordigt
         public abstract void Draw(Graphics g);
+        // Booleanse functie om te controleren of de coordinaten in het grafische object zijn 
         public abstract bool IsWithin(Point p);
+        // To string methode om de grafische objecten in een txt/.sketch bestand te krijgne.
         public abstract override string ToString();
+
+
+        // Zorgt voor speciale pen met ronde uiteindes
+        public Pen maakPen(int dikte)
+        {
+            Pen pen = new Pen(Kwast,dikte);
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            return pen;
+        }
     }
 
+
+    // Sublklasse van grafisch object die enkel wordt gebruikt bij objecten die 2 punten hebben
     public abstract class TwoPoint : GraphicalObject
     {
         protected Point EindPoint;
 
         public override string ToString()
         {
-            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." +
+            return GetType().Name + "_" + new Pen(Kwast).Color.Name + "_" + Startpoint.X + ',' + Startpoint.Y + "_" +
                    EindPoint.X + ',' + EindPoint.Y;
         }
     }
 
+    //subklasse van Two Point klasse omdat een lijn uit 2 punten bestaat
     public class Lijn : TwoPoint
     {
         private int Dikte;
@@ -38,18 +55,19 @@ namespace SchetsEditor
 
         public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(Kwast, Dikte), Startpoint, EindPoint);
+            g.DrawLine(maakPen(Dikte), Startpoint, EindPoint);
         }
 
 
-
+        // Maakt gebruik van distance between point and lijn functie
+        // Sinds in wiskunde lijnen oneindig lang zijn controleren we ook of de lijn binnen een rechthoek is van de 2 coordinaten
         public override bool IsWithin(Point p1)
         {
             double t;
             if (TweepuntTool.Punten2Rechthoek(Startpoint, EindPoint).Contains(p1.X, p1.Y) &&
                 (Math.Abs((EindPoint.Y - Startpoint.Y) * p1.X - (EindPoint.X - Startpoint.X) * p1.Y +
                           EindPoint.X * Startpoint.Y - EindPoint.Y * Startpoint.X) /
-                 Math.Sqrt(Math.Pow(EindPoint.Y - Startpoint.Y, 2) + Math.Pow(EindPoint.X - Startpoint.X, 2))) < 1)
+                 Math.Sqrt(Math.Pow(EindPoint.Y - Startpoint.Y, 2) + Math.Pow(EindPoint.X - Startpoint.X, 2))) < Dikte)
             {
                 return true;
             }
@@ -58,11 +76,13 @@ namespace SchetsEditor
         }
         public override string ToString()
         {
-            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." +
-                   EindPoint.X + ',' + EindPoint.Y + '.' + Dikte;
+            return GetType().Name + "_" + new Pen(Kwast).Color.Name + "_" + Startpoint.X + ',' + Startpoint.Y + "_" +
+                   EindPoint.X + ',' + EindPoint.Y + "_" + Dikte;
         }
     }
 
+
+    // Speciale klasse voor alles wat we gummen.
     public class Gumlijn : TwoPoint
     {
         private int Dikte;
@@ -77,7 +97,7 @@ namespace SchetsEditor
 
         public override void Draw(Graphics g)
         {
-            g.DrawLine(new Pen(Brushes.White, Dikte), Startpoint, EindPoint);
+            g.DrawLine(maakPen(Dikte), Startpoint, EindPoint);
         }
 
         public override bool IsWithin(Point p1)
@@ -86,11 +106,13 @@ namespace SchetsEditor
         }
         public override string ToString()
         {
-            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + Startpoint.X + ',' + Startpoint.Y + "." +
-                   EindPoint.X + ',' + EindPoint.Y + '.' + Dikte;
+            return GetType().Name + "_" + new Pen(Kwast).Color.Name + "_" + Startpoint.X + ',' + Startpoint.Y + "_" +
+                   EindPoint.X + ',' + EindPoint.Y + "_" + Dikte;
         }
     }
 
+
+    //subklasse van rechthoek heeft niks bijzonders enkel dat het gevuld is
     public class GevuldeRechthoek : Rechthoek
     {
         public GevuldeRechthoek(Brush kleur, Point p1, Size p2) : base(kleur, p1, p2)
@@ -110,6 +132,7 @@ namespace SchetsEditor
         }
     }
 
+    //Subklasse van grafisch object
     public class Rechthoek : GraphicalObject
     {
         protected Rectangle RechthoekObject;
@@ -124,13 +147,13 @@ namespace SchetsEditor
 
         public override void Draw(Graphics g)
         {
-            g.DrawRectangle(new Pen(Kwast, Dikte), RechthoekObject);
+            g.DrawRectangle(maakPen(Dikte), RechthoekObject);
         }
 
         public override string ToString()
         {
-            return GetType().Name + "." + new Pen(Kwast).Color.Name + "." + RechthoekObject.Location.X + ',' +
-                   RechthoekObject.Location.Y + "." + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height+'.'+Dikte;
+            return GetType().Name + "_" + new Pen(Kwast).Color.Name + "_" + RechthoekObject.Location.X + ',' +
+                   RechthoekObject.Location.Y + "_" + RechthoekObject.Size.Width + "," + RechthoekObject.Size.Height+"_"+Dikte;
 
 
         }
@@ -146,7 +169,7 @@ namespace SchetsEditor
             return false;
         }
     }
-
+    //Subklasse van grafisch object sinds een cirkel te maken is uit de gegevens van een rechthoek
     public class Cirkel : Rechthoek
     {
         public Cirkel(Brush kleur, Point p1, Size p2,int Dikte=0) : base(kleur, p1, p2,Dikte)
@@ -156,7 +179,7 @@ namespace SchetsEditor
         public override void Draw(Graphics g)
         {
 
-            g.DrawEllipse(new Pen(Kwast, Dikte), RechthoekObject);
+            g.DrawEllipse(maakPen(Dikte), RechthoekObject);
         }
 
         public override bool IsWithin(Point p)
@@ -171,6 +194,8 @@ namespace SchetsEditor
         }
     }
 
+
+    
     public class GevuldeCirkel : Cirkel
     {
         public GevuldeCirkel(Brush kleur, Point p1, Size p2) : base(kleur, p1, p2)
@@ -195,19 +220,29 @@ namespace SchetsEditor
         }
     }
 
-
+    // Subklasse van grafisch object dat elke keer 1 letter contained
     public class Tekst : GraphicalObject
         {
 
             protected char Letter;
             protected Font Font;
+            protected SizeF stringsize;
 
-            public Tekst(Brush kleur, Point p1, char c, Font f)
+            public Tekst(Brush kleur, Point p1, char c,SizeF t, Font f = null)
             {
-                Font = f;
+                if (f == null)
+                {
+                    Font = new Font("Segoe UI", 40);
+            }
+                else
+                {
+                    Font = f;
+                }
+
                 Kwast = kleur;
                 Startpoint = p1;
                 Letter = c;
+                stringsize = t;
             }
 
             public override void Draw(Graphics g)
@@ -223,12 +258,17 @@ namespace SchetsEditor
 
             public override string ToString()
             {
-                throw new NotImplementedException();
-            }
+               return GetType().Name + "_" + new Pen(Kwast).Color.Name + "_" + Startpoint.X + ',' +
+                   Startpoint.Y + "_" + stringsize.Width + "," + stringsize.Height+ "_" + Letter;
 
-            public override bool IsWithin(Point p)
+        }
+
+        public override bool IsWithin(Point p)
             {
+                if (p.X > Startpoint.X && Startpoint.X + stringsize.Width > p.X && p.Y > Startpoint.Y &&
+                    p.Y < Startpoint.Y + stringsize.Height){ return true;}
                 return false;
+
             }
         }
     }

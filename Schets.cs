@@ -23,6 +23,8 @@ namespace SchetsEditor
         {
             grlist.Add(t);
         }
+
+        // Zorgt ervoor dat resizen mooi werkt.
         public void VeranderAfmeting(Size sz)
         {
             if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)
@@ -37,6 +39,8 @@ namespace SchetsEditor
             }
         }
 
+        // Controleert de lijst van grafische objecten of een object op de coordinaten en indien zo zal hij het verwijderen 
+        // Leegt ook de bitmapgraphics zodat alles opnieuw getekend moet worden
         public void RemoveObject(Point p1)
         {
             
@@ -51,6 +55,8 @@ namespace SchetsEditor
             BitmapGraphics.Clear(Color.White);
 
         }
+
+        //Tekent de bitmap en vervolgens tekent hij op het paneel Graphics de bitmap
         public void Teken(Graphics gr, SchetsControl s)
         {
             BitmapGraphics.Clear(Color.White);
@@ -62,6 +68,8 @@ namespace SchetsEditor
             gr.DrawImage(bitmap, 0, 0);
         }
 
+
+        // Cleared de lijst zodat er geen bestanden meer zijn
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
@@ -69,15 +77,19 @@ namespace SchetsEditor
 
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
         }   
+        // Zou de tekening moeten draaien werk op het moment echter niet.
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
         }
 
+
+        // Opent een save file dialoag en kan het opslaan in de 4 file format (jpg, bmp, png, sketch) Sketch is de zelf gemaakt fileformat waarmee je het ook weer kan openen
+        
         public void Save()
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Paint Image|*.png|list Lijst|.schets";
+            saveFileDialog1.Filter = "Jpg Image|*.jpg|Bitmap Image|*.bmp|Paint Image|*.png|list Lijst|.schets";
             saveFileDialog1.Title = "Save an Image File";
             saveFileDialog1.ShowDialog();
             if (saveFileDialog1.FileName != "")
@@ -113,17 +125,19 @@ namespace SchetsEditor
                 fs.Close();
             }
         }
-
+        // Kleine subfunctie om tekst in het .sketch bestand to gooien
         private static void AddText(FileStream fs, string value)
         {
             byte[] info = new UTF8Encoding(true).GetBytes(value+ System.Environment.NewLine);
             fs.Write(info,0,info.Length);
             
         }
+
+        // Opent via streamreader een .sketch bestand waar alle gegevens instaan om alle grafische objecten weer in een lijst te gooien
         public void Openen(StreamReader sr)
         {
             string s;
-            char[] seperator = {'.'};
+            char[] seperator = {'_'};
             char[] XYseperator = {','};
             string[] values;
             string[] XY;
@@ -133,7 +147,6 @@ namespace SchetsEditor
                 values = s.Split(seperator, StringSplitOptions.RemoveEmptyEntries);
                 XY = values[2].Split(XYseperator, StringSplitOptions.RemoveEmptyEntries);
                 XY2 = values[3].Split(XYseperator, StringSplitOptions.RemoveEmptyEntries);
-                Debug.WriteLine(s);
                 switch (values[0])
                 {
                     
@@ -151,6 +164,9 @@ namespace SchetsEditor
                         break;
                     case "Cirkel":
                         grlist.Add(new Cirkel(new SolidBrush(ColorTranslator.FromHtml('#'+values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])), new Size(int.Parse(XY2[0]), int.Parse(XY2[1]))));
+                        break;
+                    case "Tekst":
+                        grlist.Add(new Tekst(new SolidBrush(ColorTranslator.FromHtml('#' + values[1])), new Point(int.Parse(XY[0]), int.Parse(XY[1])),char.Parse(values[4]), new SizeF(float.Parse(XY2[0]), float.Parse(XY2[1]))));
                         break;
                 }
             }

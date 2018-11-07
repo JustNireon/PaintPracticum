@@ -47,7 +47,7 @@ namespace SchetsEditor
                 string tekst = c.ToString();
                 SizeF sz =
                     s.MaakBitmapGraphics().MeasureString(tekst, font, startpunt, StringFormat.GenericTypographic);
-                s.GetSchets().AddGraphics(new Tekst(kwast, startpunt, c,font));
+                s.GetSchets().AddGraphics(new Tekst(kwast, startpunt, c,sz,font));
                 startpunt.X += (int)sz.Width;
                 
                 
@@ -148,8 +148,7 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            kwast = new SolidBrush(s.PenKleur);
-            this.Compleet(s,startpunt,p);
+            base.MuisLos(s,p);
             startpunt = p;
             s.Invalidate();
         }
@@ -217,7 +216,7 @@ Pen dashedPen = new Pen(Color.Black, 1);
 
         public override void Letter(SchetsControl s, char c)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public override void MuisLos(SchetsControl s, Point p)
