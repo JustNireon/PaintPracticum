@@ -247,6 +247,9 @@ namespace SchetsEditor
             d.Value = 1;
             d.Location = new Point(440, 0);
             d.Maximum = 99;
+            d.ForeColor = Color.White;
+            d.BackColor = Color.FromArgb(40, 40, 40);
+            d.BorderStyle = BorderStyle.FixedSingle;
             d.Minimum = 1;
             d.ValueChanged += veranderDikte;
             paneel.Controls.Add(d);
