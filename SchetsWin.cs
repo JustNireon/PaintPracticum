@@ -244,7 +244,7 @@ namespace SchetsEditor
             paneel.Controls.Add(l);
 
             d = new NumericUpDown();
-            d.Value = 3;
+            d.Value = 1;
             d.Location = new Point(440, 0);
             d.Maximum = 99;
             d.Minimum = 1;
